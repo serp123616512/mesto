@@ -1,0 +1,14 @@
+.logo {
+  width: 142px;
+  height: 33px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top 0 left 0;
+}
+
+@media screen and (max-width: 600px) {
+  .logo {
+   width: 103px;
+   height: 24px;
+  }
+}
