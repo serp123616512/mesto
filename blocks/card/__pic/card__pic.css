@@ -1,0 +1,5 @@
+.card__pic {
+  object-fit: cover;
+  object-position: center;
+  aspect-ratio: 1;
+}

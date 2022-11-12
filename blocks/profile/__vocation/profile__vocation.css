@@ -16,3 +16,9 @@
     line-height: 17px;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .profile__vocation {
+    text-align: center;
+  }
+}

@@ -10,6 +10,6 @@
   .profile {
     flex-direction: column;
     justify-content: flex-start;
-    row-gap: 36px;
+    row-gap: 35px;
   }
 }

@@ -20,12 +20,14 @@
 @import url('../blocks/profile/__vocation/profile__vocation.css');
 @import url('../blocks/profile/__add-btn/profile__add-btn.css');
 
-@import url('');
-@import url('');
-@import url('');
-@import url('');
-@import url('');
-@import url('');
+@import url('../blocks/cards/cards.css');
+
+@import url('../blocks/card/card.css');
+@import url('../blocks/card/__pic/card__pic.css');
+@import url('../blocks/card/__info/card__info.css');
+@import url('../blocks/card/__name/card__name.css');
+@import url('../blocks/card/__like/card__like.css');
+
 @import url('');
 @import url('');
 @import url('');

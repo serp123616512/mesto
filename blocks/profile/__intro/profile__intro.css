@@ -4,12 +4,12 @@
   grid-template-columns: repeat(2, max-content);
   align-items: baseline;
   column-gap: 18px;
-  row-gap: 16px;
+  row-gap: 7px;
 }
 
 @media screen and (max-width: 600px) {
   .profile__intro {
     column-gap: 10px;
-    row-gap: 14px;
+    row-gap: 7px;
   }
 }

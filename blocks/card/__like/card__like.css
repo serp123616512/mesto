@@ -1,0 +1,11 @@
+.card__like {
+  width: 22px;
+  height: 19px;
+  background-image: url('../../../images/like_disabled.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 0;
+  border: 0;
+  background-color: white;
+}
