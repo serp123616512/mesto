@@ -1,0 +1,22 @@
+.popup__close {
+  width: 32px;
+  aspect-ratio: 1;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background-image: url('../../../images/popup_close.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: none;
+  border: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__close {
+    width: 20px;
+    top: -36px;
+    right: 0;
+  }
+}
