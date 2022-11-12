@@ -11,7 +11,7 @@
 
 @media screen and (max-width: 767px) {
   .profile__vocation {
-    max-width: 280px;
+    max-width: 240px;
     font-size: 14px;
     line-height: 17px;
   }
