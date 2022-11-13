@@ -1,23 +1,19 @@
+const profileNameElement = document.querySelector('.profile__name');
+const profileVocationElement = document.querySelector('.profile__vocation');
+const popupOpenButton = document.querySelector('.profile__edit-btn');
 const popupElement = document.querySelector('.popup');
 const popupCloseButton = popupElement.querySelector('.popup__close');
-const popupOpenButton = document.querySelector('.profile__edit-btn');
-
-const togglePopupVisibility = function () {
-  popupElement.classList.toggle('popup__open');
-}
-
-popupOpenButton.addEventListener('click', togglePopupVisibility);
-popupCloseButton.addEventListener('click', togglePopupVisibility);
-
 const popupFormElement = popupElement.querySelector('.popup__content');
 const popupInputNameElement = popupFormElement.querySelector('#name');
 const popupInputVocationElement = popupFormElement.querySelector('#vocation');
 
-const profileNameElement = document.querySelector('.profile__name');
-const profileVocationElement = document.querySelector('.profile__vocation');
-
-popupInputNameElement.placeholder = profileNameElement.textContent;
-popupInputVocationElement.placeholder = profileVocationElement.textContent;
+const togglePopupVisibility = function () {
+  popupElement.classList.toggle('popup__open');
+  popupInputNameElement.placeholder = profileNameElement.textContent;
+  popupInputVocationElement.placeholder = profileVocationElement.textContent;
+  popupInputNameElement.value = '';
+  popupInputVocationElement.value = '';
+}
 
 const formSubmitHandler = function (evt) {
   evt.preventDefault();
@@ -26,4 +22,6 @@ const formSubmitHandler = function (evt) {
   togglePopupVisibility();
 }
 
+popupOpenButton.addEventListener('click', togglePopupVisibility);
+popupCloseButton.addEventListener('click', togglePopupVisibility);
 popupFormElement.addEventListener('submit', formSubmitHandler);
