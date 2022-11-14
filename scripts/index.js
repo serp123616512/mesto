@@ -7,21 +7,23 @@ const popupFormElement = popupElement.querySelector('.popup__content');
 const popupInputNameElement = popupFormElement.querySelector('#name');
 const popupInputVocationElement = popupFormElement.querySelector('#vocation');
 
-const togglePopupVisibility = function () {
-  popupElement.classList.toggle('popup__open');
-  popupInputNameElement.placeholder = profileNameElement.textContent;
-  popupInputVocationElement.placeholder = profileVocationElement.textContent;
-  popupInputNameElement.value = '';
-  popupInputVocationElement.value = '';
+const popupOpen = function () {
+  popupElement.classList.add('popup__open');
+  popupInputNameElement.value = profileNameElement.textContent;
+  popupInputVocationElement.value = profileVocationElement.textContent;
+}
+
+const popupClose = function () {
+  popupElement.classList.remove('popup__open');
 }
 
 const formSubmitHandler = function (evt) {
   evt.preventDefault();
   profileNameElement.textContent = popupInputNameElement.value;
   profileVocationElement.textContent = popupInputVocationElement.value;
-  togglePopupVisibility();
+  popupClose();
 }
 
-popupOpenButton.addEventListener('click', togglePopupVisibility);
-popupCloseButton.addEventListener('click', togglePopupVisibility);
+popupOpenButton.addEventListener('click', popupOpen);
+popupCloseButton.addEventListener('click', popupClose);
 popupFormElement.addEventListener('submit', formSubmitHandler);
