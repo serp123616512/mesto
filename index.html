@@ -59,12 +59,22 @@
     </div>
   </section>
 
+  <section id="picture" class="popup popup_dark">
+    <div class="popup__container-pic">
+      <button class="popup__close button-hover"></button>
+      <img class="popup__pic" src="" alt="">
+      <p class="popup__title"></p>
+    </div>
+  </section>
+
             <!--  Template  -->
 
   <template id="cards-template">
     <li class="card">
       <button class="card__trash button-hover"></button>
-      <img class="card__pic" src="" alt="">
+      <button class="card__pic-popup">
+        <img class="card__pic" src="" alt="">
+      </button>
       <div class="card__info">
         <p class="card__name"></p>
         <button class="card__like button-hover"></button>

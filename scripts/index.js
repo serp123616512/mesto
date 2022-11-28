@@ -12,6 +12,10 @@ const popupCloseButtonCards = popupElementCard.querySelector('.popup__close');
 const popupFormElementCards = popupElementCard.querySelector('.popup__content');
 const popupInputTitleElement = popupFormElementCards.querySelector('#title');
 const popupInputLinkElement = popupFormElementCards.querySelector('#link');
+const popupElementPicture = document.querySelector('#picture');
+const popupCloseButtonPicture = popupElementPicture.querySelector('.popup__close');
+const popupPictureLink = popupElementPicture.querySelector('.popup__pic');
+const popupPictureTitle = popupElementPicture.querySelector('.popup__title');
 const cardsListElement = document.querySelector('.cards');
 const cardsTemplateElement = document.querySelector('#cards-template').content;
 const inputCardsArray = {name: '', link: '',};
@@ -66,6 +70,10 @@ const popupOpenCard = () => {
   popupOpen(popupElementCard);
 }
 
+const popupOpenPicture = () => {
+  popupOpen(popupElementPicture);
+}
+
 const popupClose = popup => {
   popup.classList.remove('popup__open');
 }
@@ -76,6 +84,10 @@ const popupCloseProfile = () => {
 
 const popupCloseCard = () => {
   popupClose(popupElementCard);
+}
+
+const popupClosePicture = () => {
+  popupClose(popupElementPicture);
 }
 
 const formSubmitHandlerProfile = (evt, popup) => {
@@ -99,11 +111,16 @@ const createCardElement = cards => {
   cardName.textContent = cards.name;
   const cardPictureLink = cardElement.querySelector('.card__pic');
   cardPictureLink.src = cards.link;
-  cardElement.querySelector('.card__like').addEventListener('click', function(evt) {
+  cardElement.querySelector('.card__like').addEventListener('click', evt => {
     evt.target.classList.toggle('card__like_active');
   });
-  cardElement.querySelector('.card__trash').addEventListener('click', function (evt) {
+  cardElement.querySelector('.card__trash').addEventListener('click', evt => {
     evt.target.closest('.card').remove();
+  });
+  cardElement.querySelector('.card__pic-popup').addEventListener('click', evt => {
+    popupPictureLink.src = evt.target.src;
+    popupPictureTitle.textContent = evt.target.closest('.card').querySelector('.card__name').textContent;
+    popupOpenPicture();
   });
   return cardElement;
 }
@@ -125,6 +142,7 @@ popupFormElementProfile.addEventListener('submit', popupAcceptProfile);
 popupOpenButtonCards.addEventListener('click', popupOpenCard);
 popupCloseButtonCards.addEventListener('click', popupCloseCard);
 popupFormElementCards.addEventListener('submit', popupAcceptCard);
+popupCloseButtonPicture.addEventListener('click', popupClosePicture);
 
 
 
