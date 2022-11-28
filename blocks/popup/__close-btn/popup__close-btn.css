@@ -1,4 +1,4 @@
-.popup__close {
+.popup__close-btn {
   width: 32px;
   aspect-ratio: 1;
   position: absolute;
@@ -14,7 +14,7 @@
 }
 
 @media screen and (max-width: 600px) {
-  .popup__close {
+  .popup__close-btn {
     width: 20px;
     top: -36px;
     right: 0;

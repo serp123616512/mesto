@@ -2,18 +2,18 @@ const profileNameElement = document.querySelector('.profile__name');
 const profileVocationElement = document.querySelector('.profile__vocation');
 const popupOpenButtonProfile = document.querySelector('.profile__edit-btn');
 const popupElementProfile = document.querySelector('#profile');
-const popupCloseButtonProfile = popupElementProfile.querySelector('.popup__close');
+const popupCloseButtonProfile = popupElementProfile.querySelector('.popup__close-btn');
 const popupFormElementProfile= popupElementProfile.querySelector('.popup__content');
 const popupInputNameElement = popupFormElementProfile.querySelector('#name');
 const popupInputVocationElement = popupFormElementProfile.querySelector('#vocation');
 const popupElementCard = document.querySelector('#card');
 const popupOpenButtonCards = document.querySelector('.profile__add-btn');
-const popupCloseButtonCards = popupElementCard.querySelector('.popup__close');
+const popupCloseButtonCards = popupElementCard.querySelector('.popup__close-btn');
 const popupFormElementCards = popupElementCard.querySelector('.popup__content');
 const popupInputTitleElement = popupFormElementCards.querySelector('#title');
 const popupInputLinkElement = popupFormElementCards.querySelector('#link');
 const popupElementPicture = document.querySelector('#picture');
-const popupCloseButtonPicture = popupElementPicture.querySelector('.popup__close');
+const popupCloseButtonPicture = popupElementPicture.querySelector('.popup__close-btn');
 const popupPictureLink = popupElementPicture.querySelector('.popup__pic');
 const popupPictureTitle = popupElementPicture.querySelector('.popup__title');
 const cardsListElement = document.querySelector('.cards');
@@ -47,7 +47,8 @@ const initialCards = [
 ];
 
 const popupOpen = popup => {
-  popup.classList.add('popup__open');
+  popup.classList.add('popup_status_open');
+  popup.classList.remove('popup_status_close');
 }
 
 const popupInputValueProfile = () => {
@@ -75,7 +76,8 @@ const popupOpenPicture = () => {
 }
 
 const popupClose = popup => {
-  popup.classList.remove('popup__open');
+  popup.classList.add('popup_status_close');
+  popup.classList.remove('popup_status_open');
 }
 
 const popupCloseProfile = () => {
@@ -143,8 +145,3 @@ popupOpenButtonCards.addEventListener('click', popupOpenCard);
 popupCloseButtonCards.addEventListener('click', popupCloseCard);
 popupFormElementCards.addEventListener('submit', popupAcceptCard);
 popupCloseButtonPicture.addEventListener('click', popupClosePicture);
-
-
-
-
-
