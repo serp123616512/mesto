@@ -40,8 +40,8 @@
       <button class="popup__close-btn button-hover"></button>
       <form class="popup__content">
         <h1 class="popup__heading">Редактировать профиль</h1>
-        <input id="name" class="popup__input-text" type="text">
-        <input id="vocation" class="popup__input-text" type="text">
+        <input id="name" class="popup__input-text" type="text" required placeholder="Имя">
+        <input id="vocation" class="popup__input-text" type="text" placeholder="Призвание">
         <input class="popup__aсcept button-hover" type="submit" value="Сохранить">
       </form>
     </div>
@@ -52,8 +52,8 @@
       <button class="popup__close-btn button-hover"></button>
       <form class="popup__content">
         <h1 class="popup__heading">Новое место</h1>
-        <input id="title" class="popup__input-text" type="text" placeholder="Название">
-        <input id="link" class="popup__input-text" type="text" placeholder="Ссылка на картинку">
+        <input id="title" class="popup__input-text" type="text" placeholder="Название" required>
+        <input id="link" class="popup__input-text" type="url" placeholder="Ссылка на картинку" required>
         <input class="popup__aсcept button-hover" type="submit" value="Сохранить">
       </form>
     </div>
@@ -69,7 +69,7 @@
 
             <!--  Template  -->
 
-  <template id="cards-template">
+  <template id="card-template">
     <li class="card">
       <button class="card__trash button-hover"></button>
       <button class="card__pic-popup">
