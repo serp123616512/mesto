@@ -2,18 +2,15 @@ const profileNameElement = document.querySelector('.profile__name');
 const profileVocationElement = document.querySelector('.profile__vocation');
 const popupOpenButtonProfile = document.querySelector('.profile__edit-btn');
 const popupElementProfile = document.querySelector('#profile');
-const popupCloseButtonProfile = popupElementProfile.querySelector('.popup__close-btn');
-const popupFormElementProfile= popupElementProfile.querySelector('.popup__content');
+const popupFormElementProfile = popupElementProfile.querySelector('.popup__content');
 const popupInputNameElement = popupFormElementProfile.querySelector('#name');
 const popupInputVocationElement = popupFormElementProfile.querySelector('#vocation');
 const popupElementCard = document.querySelector('#card');
 const popupOpenButtonCards = document.querySelector('.profile__add-btn');
-const popupCloseButtonCards = popupElementCard.querySelector('.popup__close-btn');
 const popupFormElementCards = popupElementCard.querySelector('.popup__content');
 const popupInputTitleElement = popupFormElementCards.querySelector('#title');
 const popupInputLinkElement = popupFormElementCards.querySelector('#link');
 const popupElementPicture = document.querySelector('#picture');
-const popupCloseButtonPicture = popupElementPicture.querySelector('.popup__close-btn');
 const popupPictureImage = popupElementPicture.querySelector('.popup__pic');
 const popupPictureTitle = popupElementPicture.querySelector('.popup__title');
 const cardsListElement = document.querySelector('.cards');
@@ -44,26 +41,26 @@ const openPopupCard = () => {
   openPopup(popupElementCard);
 }
 
-const closePopup = popup => {
-  popup.classList.add('popup_status_close');
-  popup.classList.remove('popup_status_open');
+const closePopup = evt => {
+    evt.target.closest('.popup').classList.add('popup_status_close');
+    evt.target.closest('.popup').classList.remove('popup_status_open');
 }
 
-const closePopupProfile = () => {
-  closePopup(popupElementProfile);
+const closePopupByClickOnCloseButton = evt => {
+  if (evt.target.classList.contains('popup__close-btn')) {
+    closePopup(evt);
+  }
 }
 
-const closePopupCard = () => {
-  closePopup(popupElementCard);
+const closePopupByClickOnOverlay = evt => {
+  if (evt.target.classList.contains('popup_status_open')) {
+    closePopup(evt);
+  }
 }
 
-const closePopupPicture = () => {
-  closePopup(popupElementPicture);
-}
-
-const handleFormSubmit = (evt, popup) => {
+const handleFormSubmit = evt => {
   evt.preventDefault();
-  closePopup(popup);
+  closePopup(evt);
 }
 
 const handleFormSubmitProfile = evt => {
@@ -121,9 +118,22 @@ initialCards.forEach(card => {
 });
 
 popupOpenButtonProfile.addEventListener('click', openPopupProfile);
-popupCloseButtonProfile.addEventListener('click', closePopupProfile);
 popupFormElementProfile.addEventListener('submit', handleFormSubmitProfile);
 popupOpenButtonCards.addEventListener('click', openPopupCard);
-popupCloseButtonCards.addEventListener('click', closePopupCard);
 popupFormElementCards.addEventListener('submit', handleFormSubmitCard);
-popupCloseButtonPicture.addEventListener('click', closePopupPicture);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('click', closePopupByClickOnCloseButton);
+document.addEventListener('click', closePopupByClickOnOverlay);
