@@ -1,4 +1,4 @@
-.popup__aсcept {
+.popup__accept {
   width: 100%;
   height: 50px;
   font-family: 'Inter';
@@ -15,7 +15,7 @@
 }
 
 @media screen and (max-width: 600px) {
-  .popup__aсcept {
+  .popup__accept {
     height: 46px;
     font-size: 14px;
     line-height: 17px;

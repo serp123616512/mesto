@@ -46,26 +46,59 @@ const openPopupCard = () => {
   openPopup(popupCardElement);
 }
 
-const closePopup = evt => {
-    evt.target.closest('.popup').classList.add('popup_status_close');
-    evt.target.closest('.popup').classList.remove('popup_status_open');
+const closePopup = () => {
+  const openedPopup = document.querySelector('.popup_status_open');
+  openedPopup.classList.add('popup_status_close');
+  openedPopup.classList.remove('popup_status_open');
+
+
+
+  // это сделано для того, чтобы при закрытии попапа и последующем открытии
+  //кнопка была не активна и нельзы было добавить пустую карточку
+  if (openedPopup.querySelector('.popup__accept')) {
+    openedPopup.querySelector('.popup__accept').setAttribute('disabled', true);
+    openedPopup.querySelector('.popup__accept').classList.add('popup__accept_inactive');
+    openedPopup.querySelector('.popup__accept').classList.remove('button-hover');
+  }
+
+
+
+  // а это сделано для того, чтобы при закрытии попапа и последующем открытии
+  //стирались ошибки валидации
+
+  const inputList = Array.from(openedPopup.querySelectorAll('.popup__input-text'));
+
+  inputList.forEach(inputElement => {
+    const errorElement = openedPopup.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.remove('popup__input-text_type_error');
+    errorElement.classList.remove('popup__input-error_active');
+    errorElement.textContent = '';
+  });
 }
 
 const closePopupByClickOnCloseButton = evt => {
   if (evt.target.classList.contains('popup__close-btn')) {
-    closePopup(evt);
+    closePopup();
   }
 }
 
 const closePopupByClickOnOverlay = evt => {
   if (evt.target.classList.contains('popup_status_open')) {
-    closePopup(evt);
+    closePopup();
+  }
+}
+
+const closePopupByClickOnEscape = evt => {
+  const openedPopup = document.querySelector('.popup_status_open');
+
+  if (openedPopup && (evt.key === 'Escape')) {
+    closePopup();
   }
 }
 
 const handleFormSubmit = evt => {
   evt.preventDefault();
-  closePopup(evt);
+  closePopup();
 }
 
 const handleFormSubmitProfile = evt => {
@@ -83,7 +116,7 @@ const handleTrashButtonClick = evt => {
 }
 
 const renderPopupPictureData = evt => {
-  popupPictureImageElement.src = evt.target.src;
+  popupPictureImageElement.src = evt.target.closest('.card').querySelector('.card__pic').src;
   popupPictureImageElement.alt = evt.target.closest('.card').querySelector('.card__name').textContent;
   popupPictureTitleElement.textContent = evt.target.closest('.card').querySelector('.card__name').textContent;
 }
@@ -135,4 +168,5 @@ popupCardFormElement.addEventListener('submit', handleFormSubmitCard);
 popupProfileFormElement.addEventListener('submit', handleFormSubmitProfile);
 
 document.addEventListener('click', closePopupByClickOnCloseButton);
-document.addEventListener('click', closePopupByClickOnOverlay);
+document.addEventListener('mousedown', closePopupByClickOnOverlay);
+document.addEventListener('keydown', closePopupByClickOnEscape);
