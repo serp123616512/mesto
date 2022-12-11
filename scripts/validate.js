@@ -29,11 +29,9 @@ const hasValidInput = inputList => {
 const toggleSubmitButtonState = (inputList, submitButtonElement, config) => {
   if (!hasValidInput(inputList)) {
     submitButtonElement.classList.add(config.inactiveButtonClass);
-    submitButtonElement.classList.remove('button-hover');
     submitButtonElement.setAttribute('disabled', true);
   } else {
     submitButtonElement.classList.remove(config.inactiveButtonClass);
-    submitButtonElement.classList.add('button-hover');
     submitButtonElement.removeAttribute('disabled');
   };
 }
@@ -41,8 +39,6 @@ const toggleSubmitButtonState = (inputList, submitButtonElement, config) => {
 const setEventListeners = (formElement, config) => {
   const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
   const submitButtonElement = formElement.querySelector(config.submitButtonSelector);
-
-  toggleSubmitButtonState(inputList, submitButtonElement, config);
 
   inputList.forEach(inputElement => {
     inputElement.addEventListener('input', () => {
@@ -58,6 +54,7 @@ const enableValidation = (config) => {
   formList.forEach(formElement => {
     formElement.addEventListener('submit', evt => {
       evt.preventDefault();
+      closePopup(evt.target.closest('.popup'));
     });
 
     setEventListeners(formElement, config);
@@ -72,3 +69,13 @@ enableValidation({
   inputErrorClass: 'popup__input-text_type_error',
   errorClass: 'popup__input-error_active'
 });
+
+const resetFormInputErrorAndSubmitButton = form => {
+  const inputList = Array.from(form.querySelectorAll('.popup__input-text'));
+  inputList.forEach(inputElement => {
+    hideInputError(form, inputElement, {inputErrorClass: 'popup__input-text_type_error', errorClass: 'popup__input-error_active'});
+  });
+
+  form.querySelector('.popup__accept').classList.add('popup__accept_inactive');
+  form.querySelector('.popup__accept').setAttribute('disabled', true);
+}

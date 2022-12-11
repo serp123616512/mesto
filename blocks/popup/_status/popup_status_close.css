@@ -1,5 +1,0 @@
-.popup_status_close {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility .5s, opacity .5s ease;
-}
