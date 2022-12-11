@@ -23,6 +23,7 @@ const cardTemplateElement = document.querySelector('#card-template').content;
 
 const closePopup = popup => {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupByClickOnEscape);
 }
 
 const closePopupByClickOnCloseButton = (evt) => {
@@ -42,7 +43,6 @@ const closePopupByClickOnEscape = evt => {
   const openedPopup = document.querySelector('.popup_opened');
   if (evt.key === 'Escape') {
     closePopup(openedPopup);
-    document.removeEventListener('keydown', closePopupByClickOnEscape);
   }
 }
 
