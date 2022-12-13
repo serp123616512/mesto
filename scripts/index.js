@@ -28,20 +28,17 @@ const closePopup = popup => {
 
 const closePopupByClickOnCloseButton = (evt) => {
   closePopup(evt.target.closest('.popup'));
-  evt.target.removeEventListener('click', closePopupByClickOnCloseButton);
-
 }
 
 const closePopupByClickOnOverlay = evt => {
   if (evt.target === evt.currentTarget) {
     closePopup(evt.target);
-    evt.target.removeEventListener('mousedown', closePopupByClickOnOverlay);
   }
 }
 
 const closePopupByClickOnEscape = evt => {
-  const openedPopup = document.querySelector('.popup_opened');
   if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
   }
 }
@@ -58,18 +55,22 @@ const openPopupProfile = () => {
   openPopup(popupProfileElement);
   popupProfileInputNameElement.value = profileNameElement.textContent;
   popupProfileInputVocationElement.value = profileVocationElement.textContent;
-  resetFormInputErrorAndSubmitButton(popupProfileElement);
+  resetFormInputError(popupProfileFormElement, config);
+  disableSubmitButton(popupProfileFormElement, config);
 }
 
 const openPopupCard = () => {
   openPopup(popupCardElement);
-  popupCardElement.querySelector('.popup__content').reset();
-  resetFormInputErrorAndSubmitButton(popupCardElement);
+  popupCardFormElement.reset();
+  resetFormInputError(popupCardFormElement, config);
+  disableSubmitButton(popupCardFormElement, config);
 }
 
-const handleFormSubmitProfile = () => {
+const handleFormSubmitProfile = evt => {
+  evt.preventDefault();
   profileNameElement.textContent = popupProfileInputNameElement.value;
   profileVocationElement.textContent = popupProfileInputVocationElement.value;
+  closePopup(popupProfileElement);
 }
 
 const handleLikeButtonClick = evt => {
@@ -109,12 +110,14 @@ const renderCardElement = card => {
 }
 
 const handleFormSubmitCard = evt => {
+  evt.preventDefault();
   const inputCardObject = {};
 
   inputCardObject.name = popupCardInputTitleElement.value;
   inputCardObject.link = popupCardInputLinkElement.value;
 
   renderCardElement(inputCardObject);
+  closePopup(popupCardElement);
 }
 
 initialCards.forEach(card => {
@@ -126,7 +129,3 @@ popupCardOpenButton.addEventListener('click', openPopupCard);
 
 popupCardFormElement.addEventListener('submit', handleFormSubmitCard);
 popupProfileFormElement.addEventListener('submit', handleFormSubmitProfile);
-
-//document.addEventListener('click', closePopupByClickOnCloseButton);
-//document.addEventListener('mousedown', closePopupByClickOnOverlay);
-//document.addEventListener('keydown', closePopupByClickOnEscape);
