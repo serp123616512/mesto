@@ -26,33 +26,32 @@ const hasValidInput = inputList => {
   });
 }
 
-const disableSubmitButton = (formElement, config) => {
-  const submitButtonElement = formElement.querySelector(config.submitButtonSelector);
+const disableSubmitButton = (submitButtonElement, config) => {
   submitButtonElement.classList.add(config.inactiveButtonClass);
   submitButtonElement.setAttribute('disabled', true);
 }
 
-const enableSubmitButton  = (formElement, config) =>  {
-  const submitButtonElement = formElement.querySelector(config.submitButtonSelector);
+const enableSubmitButton  = (submitButtonElement, config) =>  {
   submitButtonElement.classList.remove(config.inactiveButtonClass);
   submitButtonElement.removeAttribute('disabled');
 }
 
-const toggleSubmitButtonState = (inputList, formElement, config) => {
+const toggleSubmitButtonState = (inputList, submitButtonElement, config) => {
   if (!hasValidInput(inputList)) {
-    disableSubmitButton(formElement, config);
+    disableSubmitButton(submitButtonElement, config);
   } else {
-    enableSubmitButton(formElement, config);
+    enableSubmitButton(submitButtonElement, config);
   };
 }
 
 const setEventListeners = (formElement, config) => {
   const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const submitButtonElement = formElement.querySelector(config.submitButtonSelector);
 
   inputList.forEach(inputElement => {
     inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement, config);
-      toggleSubmitButtonState(inputList, formElement, config);
+      toggleSubmitButtonState(inputList, submitButtonElement, config);
     });
   });
 }
