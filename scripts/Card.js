@@ -1,15 +1,13 @@
-import { openPopup, popupPictureElement } from './index.js';
-
-
 export class Card {
-  constructor(card) {
+  constructor(card, cardSelector, handlePreviewPicture) {
     this._name = card.name;
     this._link = card.link;
+    this._cardSelector = cardSelector;
+    this._handlePreviewPicture = handlePreviewPicture;
   }
 
   _getTemplateElement() {
-    const cardElement = document
-    .querySelector('#card-template')
+    const cardElement = this._cardSelector
     .content
     .querySelector('.card')
     .cloneNode(true);
@@ -19,17 +17,23 @@ export class Card {
 
   getCardElement() {
     this._element = this._getTemplateElement();
+
+    this._cardButtonLikeElement = this._element.querySelector('.card__like');
+    this._cardButtonTrashElement = this._element.querySelector('.card__trash');
+    this._cardNameElement = this._element.querySelector('.card__name');
+    this._cardPictureElement = this._element.querySelector('.card__pic');
+
     this._setEventListeners();
 
-    this._element.querySelector('.card__name').textContent = this._name;
-    this._element.querySelector('.card__pic').src = this._link;
-    this._element.querySelector('.card__pic').alt = this._name;
+    this._cardNameElement.textContent = this._name;
+    this._cardPictureElement.src = this._link;
+    this._cardPictureElement.alt = this._name;
 
     return this._element;
   }
 
   _handleLikeButtonClick() {
-    this._element.querySelector('.card__like').classList.toggle('card__like_active');
+    this._cardButtonLikeElement.classList.toggle('card__like_active');
   }
 
   _handleTrashButtonClick() {
@@ -37,22 +41,15 @@ export class Card {
     this._element = null;
   }
 
-  _handlePreviewPicture() {
-    popupPictureElement.querySelector('.popup__pic').src = this._link;
-    popupPictureElement.querySelector('.popup__title').alt = this._name;
-    popupPictureElement.querySelector('.popup__title').textContent = this._name;
-    openPopup(popupPictureElement);
-  }
-
   _setEventListeners() {
-    this._element.querySelector('.card__like').addEventListener('click', () => {
+    this._cardButtonLikeElement.addEventListener('click', () => {
       this._handleLikeButtonClick();
     });
-    this._element.querySelector('.card__trash').addEventListener('click', () => {
+    this._cardButtonTrashElement.addEventListener('click', () => {
       this._handleTrashButtonClick();
     });
-    this._element.querySelector('.card__pic').addEventListener('click', () => {
-      this._handlePreviewPicture();
+    this._cardPictureElement.addEventListener('click', () => {
+      this._handlePreviewPicture(this._link, this._name);
     });
   }
 }

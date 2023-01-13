@@ -38,7 +38,7 @@
   <section id="profile" class="popup">
     <div class="popup__container">
       <button class="popup__close-btn button-hover"></button>
-      <form  class="popup__content" novalidate>
+      <form name="profile-form" class="popup__content" novalidate>
         <h1 class="popup__heading">Редактировать профиль</h1>
         <input
           id="name"
@@ -68,7 +68,7 @@
   <section id="card" class="popup">
     <div class="popup__container">
       <button class="popup__close-btn button-hover"></button>
-      <form class="popup__content" novalidate>
+      <form name="card-form" class="popup__content" novalidate>
         <h1 class="popup__heading">Новое место</h1>
         <input
           id="title"
@@ -114,10 +114,8 @@
     </li>
   </template>
   <script type="module" src="./scripts/cards.js"></script>
-
   <script type="module" src="./scripts/configValidator.js"></script>
   <script type="module" src="./scripts/FormValidator.js"></script>
-   <!--<script src="./scripts/validate.js"></script>-->
   <script type="module" src="./scripts/index.js"></script>
   <script type="module" src="./scripts/Card.js"></script>
 </body>
