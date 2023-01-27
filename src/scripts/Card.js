@@ -1,13 +1,13 @@
-export class Card {
+export default class Card {
   constructor(card, cardSelector, handlePreviewPicture) {
     this._name = card.name;
     this._link = card.link;
-    this._cardSelector = cardSelector;
+    this._cardTemplateElement = document.querySelector(cardSelector);
     this._handlePreviewPicture = handlePreviewPicture;
   }
 
   _getTemplateElement() {
-    const cardElement = this._cardSelector
+    const cardElement =  this._cardTemplateElement
     .content
     .querySelector('.card')
     .cloneNode(true);

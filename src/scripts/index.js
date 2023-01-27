@@ -1,9 +1,13 @@
 import { initialCards } from './cards.js';
-import { Card } from './Card.js';
 import { configValidator } from './configValidator.js';
-import { FormValidator } from './FormValidator.js';
+import Section from './Section.js';
+import Card from './Card.js';
+import PopupWithForm from './PopupWithForm.js';
+import PopupWithImage from './PopupWithImage.js';
+import UserInfo from './UserInfo.js';
+import FormValidator from './FormValidator.js';
 
-const cardTemplateElement = document.querySelector('#card-template');
+
 
 const profileNameElement = document.querySelector('.profile__name');
 const profileVocationElement = document.querySelector('.profile__vocation');
@@ -31,6 +35,82 @@ const cardsListElement = document.querySelector('.cards');
 
 const formValidatorNames = {};
 
+const userInfo = new UserInfo({
+  nameSelector: '.profile__name',
+  vocationSelector: '.profile__vocation',
+});
+
+const popupProfile = new PopupWithForm ({
+  handleFormSubmit: inputValues => {
+    userInfo.setUserInfo({
+      name: inputValues.name,
+      vocation: inputValues.vocation,
+    });
+  }
+}, '#profile');
+
+const popupCard = new PopupWithForm ({
+  handleFormSubmit: inputValues => {
+    const inputCardObject = {};
+
+    inputCardObject.name = inputValues.title;
+    inputCardObject.link = inputValues.link;
+
+  renderCardElement(inputCardObject);
+  }
+});
+
+
+const createCard = (item) => {
+  const card = new Card(item, '#card-template', openPopupPicture);
+  const cardElement = card.getCardElement();
+  return cardElement;
+}
+
+const renderCardElement = (item) => {
+  const cardElement = createCard(item);
+  cardsListElement.prepend(cardElement);
+}
+
+const section = new Section({
+  items: initialCards,
+  renderer: renderCardElement(item)
+}, '.cards');
+
+section.renerItems();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const closePopup = popup => {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closePopupByClickOnEscape);
@@ -43,7 +123,7 @@ const closePopupByClickOnEscape = evt => {
   }
 }
 
-export const openPopup = popup => {
+const openPopup = popup => {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closePopupByClickOnEscape);
 }
@@ -77,7 +157,7 @@ const openPopupPicture = (link, name) => {
 }
 
 const createCard = (item) => {
-  const card = new Card(item, cardTemplateElement, openPopupPicture);
+  const card = new Card(item, '#card-template', openPopupPicture);
   const cardElement = card.getCardElement();
   return cardElement;
 }
