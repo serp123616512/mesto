@@ -1,11 +1,11 @@
-import { initialCards } from './cards.js';
-import { configValidator } from './configValidator.js';
-import Section from './Section.js';
-import Card from './Card.js';
-import PopupWithForm from './PopupWithForm.js';
-import PopupWithImage from './PopupWithImage.js';
-import UserInfo from './UserInfo.js';
-import FormValidator from './FormValidator.js';
+import { initialCards } from '../utils/constants/cards.js';
+import { configValidator } from '../utils/constants/configValidator.js';
+import Section from '../components/Section.js';
+import Card from '../components/Card.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import UserInfo from '../components/UserInfo.js';
+import FormValidator from '../components/FormValidator.js';
 
 
 
@@ -49,6 +49,8 @@ const popupProfile = new PopupWithForm ({
   }
 }, '#profile');
 
+popupProfile.setEventListeners();
+
 const popupCard = new PopupWithForm ({
   handleFormSubmit: inputValues => {
     const inputCardObject = {};
@@ -56,29 +58,66 @@ const popupCard = new PopupWithForm ({
     inputCardObject.name = inputValues.title;
     inputCardObject.link = inputValues.link;
 
-  renderCardElement(inputCardObject);
+    renderCardElement(inputCardObject);
   }
-});
+}, '#card');
+
+popupCard.setEventListeners();
+
+const popupPicture = new PopupWithImage ('#picture');
+
+popupPicture.setEventListeners();
 
 
 const createCard = (item) => {
-  const card = new Card(item, '#card-template', openPopupPicture);
+  const card = new Card({
+    item: item,
+    handlePreviewPicture: () => {
+    popupPicture.open(item)
+    },
+  }, '#card-template');
   const cardElement = card.getCardElement();
   return cardElement;
 }
 
 const renderCardElement = (item) => {
   const cardElement = createCard(item);
-  cardsListElement.prepend(cardElement);
+  section.addItem(cardElement);
 }
 
 const section = new Section({
   items: initialCards,
-  renderer: renderCardElement(item)
+  renderer: renderCardElement,
 }, '.cards');
 
 section.renerItems();
 
+const enableValidation = config => {
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    const formValidatorName = formElement.getAttribute('name');
+    formValidatorNames[formValidatorName] = validator;
+    validator.enableValidation();
+  })
+}
+
+enableValidation(configValidator);
+
+popupProfileOpenButton.addEventListener('click', () => {
+  const userContent = userInfo.getUserInfo();
+
+  popupProfileInputNameElement.value = userContent.name;
+  popupProfileInputVocationElement.value = userContent.vocation;
+
+  formValidatorNames['profile-form'].resetFormInputError();
+
+  popupProfile.open();
+});
+
+popupCardOpenButton.addEventListener('click', () => {
+  formValidatorNames['card-form'].resetFormInputError();
+  popupCard.open();
+});
 
 
 
@@ -96,8 +135,7 @@ section.renerItems();
 
 
 
-
-
+/*
 
 
 
@@ -204,3 +242,7 @@ const enableValidation = config => {
 }
 
 enableValidation(configValidator);
+
+
+
+*/
