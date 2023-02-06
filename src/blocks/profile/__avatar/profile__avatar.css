@@ -5,6 +5,26 @@
   object-fit: cover;
   object-position: center;
   margin-right: 30px;
+
+
+}
+
+.profile__avatar::after {
+  content: '';
+  position: absolute;
+  background-color: white;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  opacity: 1;
+  transition: .5s ease;
+}
+
+.profile__avatar:hover {
+  opacity: .6;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {

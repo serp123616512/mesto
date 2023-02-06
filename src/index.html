@@ -35,6 +35,34 @@
 
             <!--  Попап  -->
 
+  <section id="avatar" class="popup">
+    <div class="popup__container">
+      <button class="popup__close-btn button-hover"></button>
+      <form name="avatar-form" class="popup__content" novalidate>
+        <h1 class="popup__heading">Обновить аватар</h1>
+        <input
+          id="avatar-link"
+          class="popup__input-text"
+          type="url"
+          placeholder="Ссылка на новый аватар"
+          required
+        />
+        <span id="avatar-link-error" class="popup__input-error"></span>
+        <button class="popup__accept button-hover" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="trash-accept" class="popup">
+    <div class="popup__container">
+      <button class="popup__close-btn button-hover"></button>
+      <form name="trash-accept-form" class="popup__content" novalidate>
+        <h1 class="popup__heading">Вы уверены?</h1>
+        <button class="popup__accept button-hover" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </section>
+
   <section id="profile" class="popup">
     <div class="popup__container">
       <button class="popup__close-btn button-hover"></button>
