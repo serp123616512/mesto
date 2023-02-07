@@ -18,6 +18,8 @@ const popupProfileInputVocationElement = popupProfileFormElement.querySelector('
 
 const popupCardOpenButton = document.querySelector('.profile__add-btn');
 
+const popupAvatarOpenButton = document.querySelector('.profile__avatar');
+
 const formValidatorNames = {};
 
 const userInfo = new UserInfo({
@@ -49,6 +51,22 @@ const popupCard = new PopupWithForm ({
 
 popupCard.setEventListeners();
 
+const popupAvatar = new PopupWithForm ({
+  handleFormSubmit: () => {
+    console.log('!');
+  }
+}, '#avatar');
+
+popupAvatar.setEventListeners();
+
+const popupTrash = new PopupWithForm ({
+  handleFormSubmit: () => {
+    console.log('!!');
+  }
+}, '#trash-accept');
+
+popupTrash.setEventListeners();
+
 const popupPicture = new PopupWithImage ('#picture');
 
 popupPicture.setEventListeners();
@@ -58,7 +76,10 @@ const createCard = (item) => {
   const card = new Card({
     item: item,
     handlePreviewPicture: () => {
-    popupPicture.open(item)
+      popupPicture.open(item)
+    },
+    handleTrashButtonClick: () => {
+      popupTrash.open();
     },
   }, '#card-template');
   const cardElement = card.getCardElement();
@@ -102,4 +123,9 @@ popupProfileOpenButton.addEventListener('click', () => {
 popupCardOpenButton.addEventListener('click', () => {
   formValidatorNames['card-form'].resetFormInputError();
   popupCard.open();
+});
+
+popupAvatarOpenButton.addEventListener('click', () => {
+  formValidatorNames['avatar-form'].resetFormInputError();
+  popupAvatar.open();
 });

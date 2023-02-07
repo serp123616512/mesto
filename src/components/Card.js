@@ -1,9 +1,10 @@
 export default class Card {
-  constructor({item, handlePreviewPicture} , cardSelector) {
+  constructor({item, handlePreviewPicture, handleTrashButtonClick} , cardSelector) {
     this._name = item.name;
     this._link = item.link;
     this._cardTemplateElement = document.querySelector(cardSelector);
     this._handlePreviewPicture = handlePreviewPicture;
+    this._handleTrashButtonClick = handleTrashButtonClick;
   }
 
   _getTemplateElement() {
@@ -34,11 +35,6 @@ export default class Card {
 
   _handleLikeButtonClick() {
     this._cardButtonLikeElement.classList.toggle('card__like_active');
-  }
-
-  _handleTrashButtonClick() {
-    this._element.remove();
-    this._element = null;
   }
 
   _setEventListeners() {
