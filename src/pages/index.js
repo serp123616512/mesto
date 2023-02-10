@@ -1,13 +1,23 @@
 import './index.css';
 
+import { submitTextProfile } from '../utils/constants/submitText.js';
+import { submitTextCard } from '../utils/constants/submitText.js';
+import { submitTextAvatar } from '../utils/constants/submitText.js';
+import { submitTextTrash } from '../utils/constants/submitText.js';
+
+import { configApi } from '../utils/constants/configApi.js';
 import { initialCards } from '../utils/constants/cards.js';
 import { configValidator } from '../utils/constants/configValidator.js';
+import Api from '../components/Api.js';
 import Section from '../components/Section.js';
 import Card from '../components/Card.js';
+import PopupWithSubmit from '../components/PopupWithSubmit.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
 import FormValidator from '../components/FormValidator.js';
+
+
 
 const formList = Array.from(document.querySelectorAll('.popup__content'));
 
@@ -22,81 +32,99 @@ const popupAvatarOpenButton = document.querySelector('.profile__avatar');
 
 const formValidatorNames = {};
 
+const api = new Api({configApi});
+
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
   vocationSelector: '.profile__vocation',
+  avatarSelector: '.profile__avatar',
 });
 
 const popupProfile = new PopupWithForm ({
-  handleFormSubmit: inputValues => {
-    userInfo.setUserInfo({
+  handleFormSubmit: (inputValues) => {
+    return api.patchUserInfo({
       name: inputValues.name,
       vocation: inputValues.vocation,
+    })
+    .then(res => {
+      userInfo.setUserInfo({
+        name: res.name,
+        vocation: res.about,
+      });
     });
-  }
+  },
+  submitText: submitTextProfile,
 }, '#profile');
-
-popupProfile.setEventListeners();
 
 const popupCard = new PopupWithForm ({
   handleFormSubmit: inputValues => {
-    const inputCardObject = {};
-
-    inputCardObject.name = inputValues.title;
-    inputCardObject.link = inputValues.link;
-
-    renderCardElement(inputCardObject);
-  }
+    return api.postCard({
+      name: inputValues.title,
+      link: inputValues.link,
+    })
+    .then(res => {
+      renderCardElement(res, {
+        userId: res.owner._id,
+      });
+    })
+  },
+  submitText: submitTextCard,
 }, '#card');
-
-popupCard.setEventListeners();
 
 const popupAvatar = new PopupWithForm ({
   handleFormSubmit: () => {
     console.log('!');
-  }
+  },
+  submitText: submitTextAvatar,
 }, '#avatar');
 
-popupAvatar.setEventListeners();
-
-const popupTrash = new PopupWithForm ({
-  handleFormSubmit: () => {
-    console.log('!!');
-  }
+const popupTrash = new PopupWithSubmit ({
+  handleFormSubmit: (cardId) => {
+    console.log('удалили карточку');
+    return api.deleteCard(cardId)
+  },
+  submitText: submitTextTrash,
 }, '#trash-accept');
-
-popupTrash.setEventListeners();
 
 const popupPicture = new PopupWithImage ('#picture');
 
 popupPicture.setEventListeners();
 
 
-const createCard = (item) => {
+const createCard = (item, {userId}) => {
   const card = new Card({
     item: item,
+    userId: userId,
     handlePreviewPicture: () => {
       popupPicture.open(item)
     },
     handleTrashButtonClick: () => {
-      popupTrash.open();
+      popupTrash.open(item);
+    },
+    handleLikeButtonClick: (cardId) => {
+      if(card.isLiked()) {
+        return api.deleteLike(cardId)
+      } else {
+        return api.putLike(cardId)
+      }
     },
   }, '#card-template');
-  const cardElement = card.getCardElement();
+  const cardElement = card.getCardElement({userId});
   return cardElement;
 }
 
-const renderCardElement = (item) => {
-  const cardElement = createCard(item);
+const renderCardElement = (item, {userId}) => {
+  const cardElement = createCard(item, {userId});
   section.addItem(cardElement);
 }
 
 const section = new Section({
-  items: initialCards,
   renderer: renderCardElement,
 }, '.cards');
 
-section.renerItems();
+//section.renerItems();
+
+
 
 const enableValidation = config => {
   formList.forEach((formElement) => {
@@ -108,6 +136,14 @@ const enableValidation = config => {
 }
 
 enableValidation(configValidator);
+
+popupProfile.setEventListeners(formValidatorNames['profile-form'].disableSubmitButton);
+popupCard.setEventListeners(formValidatorNames['card-form'].disableSubmitButton);
+popupAvatar.setEventListeners(formValidatorNames['avatar-form'].disableSubmitButton);
+popupTrash.setEventListeners(
+  formValidatorNames['trash-accept-form'].disableSubmitButton,
+  formValidatorNames['trash-accept-form'].enableSubmitButton
+  );
 
 popupProfileOpenButton.addEventListener('click', () => {
   const userContent = userInfo.getUserInfo();
@@ -129,3 +165,32 @@ popupAvatarOpenButton.addEventListener('click', () => {
   formValidatorNames['avatar-form'].resetFormInputError();
   popupAvatar.open();
 });
+
+console.log(formValidatorNames['trash-accept-form'].disableSubmitButton);
+
+Promise.all([api.getUserData(), api.getCardData()])
+.then(([userData, cardData]) => {
+  console.log(userData);
+  console.log(cardData);
+  userInfo.getUserId({
+    id: userData._id,
+  });
+  userInfo.setUserInfo({
+    name: userData.name,
+    vocation: userData.about,
+  });
+  userInfo.setUserAvatar({
+    avatar: userData.avatar,
+  });
+  section.renerItems(cardData, {
+    userId: userData._id,
+  });
+})
+.catch(console.log);
+
+
+
+//api.patchUserInfo({
+//  name: 'Name',
+//  vocation: 'Vocation',
+//});

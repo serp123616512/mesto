@@ -15,11 +15,11 @@
   <main class="content">
     <section class="profile">
       <div class="profile__info">
-        <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Твой аватар.">
+        <img class="profile__avatar" src="#" alt="Твой аватар.">
         <div class="profile__intro">
-          <p class="profile__name">Жак-Ив Кусто</p>
+          <p class="profile__name"></p>
           <button class="profile__edit-btn button-hover"></button>
-          <p class="profile__vocation">Исследователь океана</p>
+          <p class="profile__vocation"></p>
         </div>
       </div>
       <button class="profile__add-btn button-hover"></button>
@@ -58,7 +58,7 @@
       <button class="popup__close-btn button-hover"></button>
       <form name="trash-accept-form" class="popup__content" novalidate>
         <h1 class="popup__heading">Вы уверены?</h1>
-        <button class="popup__accept button-hover" type="submit">Сохранить</button>
+        <button class="popup__accept button-hover" type="submit">Да</button>
       </form>
     </div>
   </section>
@@ -116,7 +116,7 @@
           required
         />
         <span id="link-error" class="popup__input-error"></span>
-        <button class="popup__accept button-hover" type="submit">Сохранить</button>
+        <button class="popup__accept button-hover" type="submit">Создать</button>
       </form>
     </div>
   </section>
@@ -137,7 +137,10 @@
       <img class="card__pic" src="#" alt="#">
       <div class="card__info">
         <p class="card__name"></p>
-        <button class="card__like button-hover"></button>
+        <div class="card__likes">
+          <button class="card__like button-hover"></button>
+          <p class="card__likes-number"></p>
+        </div>
       </div>
     </li>
   </template>
