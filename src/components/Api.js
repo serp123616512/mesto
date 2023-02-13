@@ -4,13 +4,17 @@ export default class Api {
     this._token = configApi.token;
   }
 
+  _checkError(res) {
+    return res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`)
+  }
+
   getUserData() {
     return fetch(this._baseUrl + '/users/me', {
       headers: {
       authorization: this._token,
     }
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 
   getCardData() {
@@ -19,7 +23,7 @@ export default class Api {
       authorization: this._token,
     }
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 
   patchUserInfo({name, vocation}) {
@@ -34,7 +38,7 @@ export default class Api {
         about: vocation,
       })
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 
   postCard({name, link}) {
@@ -49,7 +53,7 @@ export default class Api {
         link: link,
       })
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 
   putLike(cardId) {
@@ -59,7 +63,7 @@ export default class Api {
         authorization: this._token,
       },
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 
   deleteLike(cardId) {
@@ -69,7 +73,7 @@ export default class Api {
         authorization: this._token,
       },
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 
   deleteCard(cardId) {
@@ -79,7 +83,7 @@ export default class Api {
         authorization: this._token,
       },
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 
   patchUserAvatar({avatar}) {
@@ -93,6 +97,6 @@ export default class Api {
         avatar: avatar,
       })
     })
-    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+    .then(this._checkError)
   }
 }
