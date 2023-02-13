@@ -8,18 +8,24 @@ export default class PopupWithForm extends Popup {
     this._submitTextProcess = submitText.process;
     this._submitTextAccept = submitText.accept;
     this._form = this._popup.querySelector('.popup__content');
-    this._inpotList = this._popup.querySelectorAll('.popup__input-text');
+    this._inputList = this._popup.querySelectorAll('.popup__input-text');
     this._submitButton = this._popup.querySelector('.popup__accept');
     this.close = this.close.bind(this);
   }
 
   _getInputValues() {
     this._values = {};
-    this._inpotList.forEach(input => {
+    this._inputList.forEach(input => {
       this._values[input.id] = input.value;
     })
 
     return this._values;
+  }
+
+  setInputValues(values) {
+    this._inputList.forEach(input => {
+      input.value = values[input.id];
+    })
   }
 
   close() {
@@ -37,7 +43,7 @@ export default class PopupWithForm extends Popup {
       .then(() => {
         this._submitButton.textContent = this._submitTextAccept;
         setTimeout(() => {this.close()}, 200);
-        setTimeout(() => {this._submitButton.textContent = this._submitTextDefault;}, 1500);
+        setTimeout(() => {this._submitButton.textContent = this._submitTextDefault;}, 700);
       })
       .catch(err => {
         this._submitButton.textContent = err;

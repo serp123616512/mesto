@@ -25,13 +25,17 @@ export default class Card {
     if(this._ownerId === this._userId) {
       this._cardButtonTrashElement.classList.add('card__trash_active');
       this._cardButtonTrashElement.addEventListener('click', () => {
-        this._handleTrashButtonClick();
+        this._handleTrashButtonClick(this._element);
       });
     }
   }
 
   isLiked() {
     return this._likes.find(owner => owner._id === this._userId)
+  }
+
+  updateLikes(length) {
+    this._cardLikesNumber.textContent = length;
   }
 
   getCardElement() {
@@ -54,26 +58,17 @@ export default class Card {
     this._cardNameElement.textContent = this._name;
     this._cardPictureElement.src = this._link;
     this._cardPictureElement.alt = this._name;
-    this._cardLikesNumber.textContent = this._likes.length;
+    this.updateLikes(this._likes.length);
 
     return this._element;
   }
-
-  //_handleTrashButtonClick() {
-  //  this._element.remove();
-  //  this._element = null;
-  //}
-
-  //_handleLikeButtonClick() {
-  //  this._cardButtonLikeElement.classList.toggle('card__like_active');
-  //}
 
   _setEventListeners() {
     this._cardButtonLikeElement.addEventListener('click', () => {
       this._handleLikeButtonClick(this._id)
       .then(res => {
         this._cardButtonLikeElement.classList.toggle('card__like_active');
-        this._cardLikesNumber.textContent = res.likes.length;
+        this.updateLikes(res.likes.length);
         this._likes = res.likes;
       })
       .catch(console.log);

@@ -81,4 +81,18 @@ export default class Api {
     })
     .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
   }
+
+  patchUserAvatar({avatar}) {
+    return fetch(this._baseUrl + '/users/me/avatar', {
+      method: 'PATCH',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        avatar: avatar,
+      })
+    })
+    .then(res => res.ok ? res.json(): Promise.reject(`Ошибка ${res.status}`))
+  }
 }

@@ -1,0 +1,7 @@
+.profile__avatar-wrapper {
+  background-color: black;
+  background-image: url('../../../images/avatar-btn.svg');
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 47px;
+}

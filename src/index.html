@@ -15,7 +15,9 @@
   <main class="content">
     <section class="profile">
       <div class="profile__info">
-        <img class="profile__avatar" src="#" alt="Твой аватар.">
+        <div class="profile__avatar-wrapper">
+          <img class="profile__avatar" src="#" alt="Твой аватар.">
+        </div>
         <div class="profile__intro">
           <p class="profile__name"></p>
           <button class="profile__edit-btn button-hover"></button>
@@ -33,7 +35,7 @@
     <p class="footer__copyright">&copy; 2022 Mesto Russia by Sergey Lupanov</p>
   </footer>
 
-            <!--  Попап  -->
+            <!--  Popups  -->
 
   <section id="avatar" class="popup">
     <div class="popup__container">
@@ -57,7 +59,7 @@
     <div class="popup__container">
       <button class="popup__close-btn button-hover"></button>
       <form name="trash-accept-form" class="popup__content" novalidate>
-        <h1 class="popup__heading">Вы уверены?</h1>
+        <h1 class="popup__heading popup__heading_popup-with-submit">Вы уверены?</h1>
         <button class="popup__accept button-hover" type="submit">Да</button>
       </form>
     </div>

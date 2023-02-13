@@ -4,8 +4,8 @@ export default class Section {
     this._container = document.querySelector(selector);
   }
 
-  renerItems(items, {userId}) {
-    items.reverse().forEach(item => this._renderer(item, {userId}))
+  renerItems(items, userId) {
+    items.reverse().forEach(item => this._renderer(item, userId))
   }
 
   addItem(itemHtml) {

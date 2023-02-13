@@ -6,7 +6,6 @@ import { submitTextAvatar } from '../utils/constants/submitText.js';
 import { submitTextTrash } from '../utils/constants/submitText.js';
 
 import { configApi } from '../utils/constants/configApi.js';
-import { initialCards } from '../utils/constants/cards.js';
 import { configValidator } from '../utils/constants/configValidator.js';
 import Api from '../components/Api.js';
 import Section from '../components/Section.js';
@@ -17,14 +16,11 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
 import FormValidator from '../components/FormValidator.js';
 
-
+//const cardList = [];
 
 const formList = Array.from(document.querySelectorAll('.popup__content'));
 
 const popupProfileOpenButton = document.querySelector('.profile__edit-btn');
-const popupProfileFormElement = document.forms['profile-form'];
-const popupProfileInputNameElement = popupProfileFormElement.querySelector('#name');
-const popupProfileInputVocationElement = popupProfileFormElement.querySelector('#vocation');
 
 const popupCardOpenButton = document.querySelector('.profile__add-btn');
 
@@ -40,8 +36,22 @@ const userInfo = new UserInfo({
   avatarSelector: '.profile__avatar',
 });
 
+const popupAvatar = new PopupWithForm ({
+  handleFormSubmit: inputValues => {
+    return api.patchUserAvatar({
+      avatar: inputValues['avatar-link'],
+    })
+    .then(res => {
+      userInfo.setUserAvatar({
+        avatar: res.avatar,
+      });
+    })
+  },
+  submitText: submitTextAvatar,
+}, '#avatar');
+
 const popupProfile = new PopupWithForm ({
-  handleFormSubmit: (inputValues) => {
+  handleFormSubmit: inputValues => {
     return api.patchUserInfo({
       name: inputValues.name,
       vocation: inputValues.vocation,
@@ -51,7 +61,7 @@ const popupProfile = new PopupWithForm ({
         name: res.name,
         vocation: res.about,
       });
-    });
+    })
   },
   submitText: submitTextProfile,
 }, '#profile');
@@ -63,24 +73,14 @@ const popupCard = new PopupWithForm ({
       link: inputValues.link,
     })
     .then(res => {
-      renderCardElement(res, {
-        userId: res.owner._id,
-      });
+      renderCardElement(res, res.owner._id);
     })
   },
   submitText: submitTextCard,
 }, '#card');
 
-const popupAvatar = new PopupWithForm ({
-  handleFormSubmit: () => {
-    console.log('!');
-  },
-  submitText: submitTextAvatar,
-}, '#avatar');
-
 const popupTrash = new PopupWithSubmit ({
   handleFormSubmit: (cardId) => {
-    console.log('удалили карточку');
     return api.deleteCard(cardId)
   },
   submitText: submitTextTrash,
@@ -88,18 +88,15 @@ const popupTrash = new PopupWithSubmit ({
 
 const popupPicture = new PopupWithImage ('#picture');
 
-popupPicture.setEventListeners();
-
-
-const createCard = (item, {userId}) => {
+const createCard = (item, userId) => {
   const card = new Card({
     item: item,
     userId: userId,
     handlePreviewPicture: () => {
       popupPicture.open(item)
     },
-    handleTrashButtonClick: () => {
-      popupTrash.open(item);
+    handleTrashButtonClick: (element) => {
+      popupTrash.open(item, element);
     },
     handleLikeButtonClick: (cardId) => {
       if(card.isLiked()) {
@@ -109,22 +106,18 @@ const createCard = (item, {userId}) => {
       }
     },
   }, '#card-template');
-  const cardElement = card.getCardElement({userId});
+  const cardElement = card.getCardElement();
   return cardElement;
 }
 
-const renderCardElement = (item, {userId}) => {
-  const cardElement = createCard(item, {userId});
+const renderCardElement = (item, userId) => {
+  const cardElement = createCard(item, userId);
   section.addItem(cardElement);
 }
 
 const section = new Section({
   renderer: renderCardElement,
 }, '.cards');
-
-//section.renerItems();
-
-
 
 const enableValidation = config => {
   formList.forEach((formElement) => {
@@ -143,16 +136,12 @@ popupAvatar.setEventListeners(formValidatorNames['avatar-form'].disableSubmitBut
 popupTrash.setEventListeners(
   formValidatorNames['trash-accept-form'].disableSubmitButton,
   formValidatorNames['trash-accept-form'].enableSubmitButton
-  );
+);
+popupPicture.setEventListeners();
 
 popupProfileOpenButton.addEventListener('click', () => {
-  const userContent = userInfo.getUserInfo();
-
-  popupProfileInputNameElement.value = userContent.name;
-  popupProfileInputVocationElement.value = userContent.vocation;
-
+  popupProfile.setInputValues(userInfo.getUserInfo());
   formValidatorNames['profile-form'].resetFormInputError();
-
   popupProfile.open();
 });
 
@@ -166,15 +155,8 @@ popupAvatarOpenButton.addEventListener('click', () => {
   popupAvatar.open();
 });
 
-console.log(formValidatorNames['trash-accept-form'].disableSubmitButton);
-
 Promise.all([api.getUserData(), api.getCardData()])
 .then(([userData, cardData]) => {
-  console.log(userData);
-  console.log(cardData);
-  userInfo.getUserId({
-    id: userData._id,
-  });
   userInfo.setUserInfo({
     name: userData.name,
     vocation: userData.about,
@@ -182,15 +164,19 @@ Promise.all([api.getUserData(), api.getCardData()])
   userInfo.setUserAvatar({
     avatar: userData.avatar,
   });
-  section.renerItems(cardData, {
-    userId: userData._id,
-  });
+  section.renerItems(cardData, userData._id);
+  //cardList = document.querySelectorAll('.card');
 })
 .catch(console.log);
 
+/*const upDateLikesNumber = () => {
+  api.getCardData()
+  .then(res => {
+    cardList.forEach(card => {
+      const likesNumber = card.querySelector('.card__likes-number');
+      likesNumber.textContent =
+    })
+  })
 
-
-//api.patchUserInfo({
-//  name: 'Name',
-//  vocation: 'Vocation',
-//});
+  setTimeout(() => {this.close()}, 200);
+}*/

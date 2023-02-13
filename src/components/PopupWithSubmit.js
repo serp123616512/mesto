@@ -10,9 +10,9 @@ export default class PopupWithSubmit extends Popup {
     this._submitButton = this._popup.querySelector('.popup__accept');
   }
 
-  open(item) {
+  open(item, element) {
     this._cardId = item._id;
-    console.log(this._cardId);
+    this._element = element;
     super.open();
   }
 
@@ -20,22 +20,26 @@ export default class PopupWithSubmit extends Popup {
     super.setEventListeners();
     this._popup.addEventListener('submit', evt => {
       evt.preventDefault();
-      console.log('!!!');
       this._submitButton.textContent = this._submitTextProcess;
       disableSubmitButton();
       this._handleFormSubmit(this._cardId)
       .then(() => {
+        this._element.remove();
+        this._element = null;
         this._submitButton.textContent = this._submitTextAccept;
         setTimeout(() => {this.close()}, 200);
         setTimeout(() => {
           this._submitButton.textContent = this._submitTextDefault;
           enableSubmitButton();
-        }, 1500);
+        }, 700);
       })
       .catch(err => {
         this._submitButton.textContent = err;
         console.log(err);
-        setTimeout(() => {this._submitButton.textContent = this._submitTextDefault;}, 1000);
+        setTimeout(() => {
+          this._submitButton.textContent = this._submitTextDefault;
+          enableSubmitButton();
+        }, 1000);
       });
     });
   }
