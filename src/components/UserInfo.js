@@ -14,11 +14,11 @@ export default class UserInfo {
   }
 
   setUserInfo({name, vocation}) {
-    this._infoName.textContent = name;
-    this._infoVocation.textContent = vocation;
+    if(name) this._infoName.textContent = name;
+    if(vocation) this._infoVocation.textContent = vocation;
   }
 
   setUserAvatar({avatar}) {
-    this._infoAvatar.src = avatar;
+    if(avatar) this._infoAvatar.src = avatar;
   }
 }

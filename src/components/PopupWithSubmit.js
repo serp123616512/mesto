@@ -1,13 +1,11 @@
 import Popup from './Popup.js';
 
 export default class PopupWithSubmit extends Popup {
-  constructor({handleFormSubmit, submitText}, selector) {
+  constructor({handleFormSubmit}, selector) {
     super(selector);
     this._handleFormSubmit = handleFormSubmit;
-    this._submitTextDefault = submitText.default;
-    this._submitTextProcess = submitText.process;
-    this._submitTextAccept = submitText.accept;
     this._submitButton = this._popup.querySelector('.popup__accept');
+    this.close = this.close.bind(this);
   }
 
   open(item, element) {
@@ -16,31 +14,22 @@ export default class PopupWithSubmit extends Popup {
     super.open();
   }
 
-  setEventListeners(disableSubmitButton, enableSubmitButton) {
+  close() {
+    super.close();
+  }
+
+  setEventListeners() {
     super.setEventListeners();
     this._popup.addEventListener('submit', evt => {
       evt.preventDefault();
-      this._submitButton.textContent = this._submitTextProcess;
-      disableSubmitButton();
-      this._handleFormSubmit(this._cardId)
-      .then(() => {
-        this._element.remove();
-        this._element = null;
-        this._submitButton.textContent = this._submitTextAccept;
-        setTimeout(() => {this.close()}, 200);
-        setTimeout(() => {
-          this._submitButton.textContent = this._submitTextDefault;
-          enableSubmitButton();
-        }, 700);
+      this._handleFormSubmit({
+        submitButton: this._submitButton,
+        inputValues: {
+          cardId: this._cardId,
+          element: this._element,
+        },
+        closePopup: this.close
       })
-      .catch(err => {
-        this._submitButton.textContent = err;
-        console.log(err);
-        setTimeout(() => {
-          this._submitButton.textContent = this._submitTextDefault;
-          enableSubmitButton();
-        }, 1000);
-      });
     });
   }
 }
