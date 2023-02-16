@@ -8,8 +8,6 @@ import { submitTextTrash } from '../utils/constants/submitText.js';
 import { configApi } from '../utils/constants/configApi.js';
 import { configValidator } from '../utils/constants/configValidator.js';
 
-import { renderLoading } from '../utils/utils.js';
-
 import Api from '../components/Api.js';
 import Section from '../components/Section.js';
 import Card from '../components/Card.js';
@@ -39,100 +37,112 @@ const userInfo = new UserInfo({
   avatarSelector: '.profile__avatar',
 });
 
-const promiseAvatar = inputValues => {
-  return api.patchUserAvatar({
-    avatar: inputValues['avatar-link'],
-  })
-  .then(res => {
-    userInfo.setUserAvatar({
-      avatar: res.avatar,
-    });
-  })
-}
-
-const promiseProfile = inputValues => {
-  return api.patchUserInfo({
-    name: inputValues.name,
-    vocation: inputValues.vocation,
-  })
-  .then(res => {
-    userInfo.setUserInfo({
-      name: res.name,
-      vocation: res.about,
-    });
-  })
-}
-
-const promiseCard = inputValues => {
-  return api.postCard({
-    name: inputValues.title,
-    link: inputValues.link,
-  })
-  .then(res => {
-    renderCardElement(res, res.owner._id);
-  })
-}
-
-const promiseTrash = ({cardId, element}) => {
-  return api.deleteCard(cardId)
-  .then(() => {
-    element.remove();
-    element = null;
-  })
-}
-
 const popupAvatar = new PopupWithForm ({
-  handleFormSubmit: ({submitButton, inputValues, closePopup}) => {
-    renderLoading({
-      submitButton,
-      submitText: submitTextAvatar,
-      disableSubmitButton: formValidatorNames['avatar-form'].disableSubmitButton,
-      enableSubmitButton: formValidatorNames['avatar-form'].enableSubmitButton,
-      promise: promiseAvatar,
-      inputValues,
-      closePopup
+  handleFormSubmit: inputValues => {
+    popupAvatar.setSubmitText(submitTextAvatar.process);
+    formValidatorNames['avatar-form'].disableSubmitButton();
+
+    api.patchUserAvatar({
+      avatar: inputValues['avatar-link'],
+    })
+    .then(res => {
+      userInfo.setUserAvatar({
+        avatar: res.avatar,
+      });
+      popupAvatar.setSubmitText(submitTextAvatar.accept);
+      setTimeout(() => {popupAvatar.close()}, 200);
+    })
+    .catch(err => {
+      console.log(err);
+      popupAvatar.setSubmitText(err);
+    })
+    .finally(() => {
+      setTimeout(() => {
+        popupAvatar.setSubmitText(submitTextAvatar.default);
+        formValidatorNames['avatar-form'].enableSubmitButton();
+      }, 1000);
     })
   }
 }, '#avatar');
 
 const popupProfile = new PopupWithForm ({
-  handleFormSubmit: ({submitButton, inputValues, closePopup}) => {
-    renderLoading({
-      submitButton,
-      submitText: submitTextProfile,
-      disableSubmitButton: formValidatorNames['profile-form'].disableSubmitButton,
-      enableSubmitButton: formValidatorNames['profile-form'].enableSubmitButton,
-      promise: promiseProfile,
-      inputValues,
-      closePopup
+  handleFormSubmit: inputValues => {
+    popupProfile.setSubmitText(submitTextProfile.process);
+    formValidatorNames['profile-form'].disableSubmitButton();
+
+    api.patchUserInfo({
+      name: inputValues.name,
+      vocation: inputValues.vocation,
+    })
+    .then(res => {
+      userInfo.setUserInfo({
+        name: res.name,
+        vocation: res.about,
+      });
+      popupProfile.setSubmitText(submitTextProfile.accept);
+      setTimeout(() => {popupProfile.close()}, 200);
+    })
+    .catch(err => {
+      console.log(err);
+      popupProfile.setSubmitText(err);
+    })
+    .finally(() => {
+      setTimeout(() => {
+        popupProfile.setSubmitText(submitTextProfile.default);
+        formValidatorNames['profile-form'].enableSubmitButton();
+      }, 1000);
     })
   }
 }, '#profile');
 
 const popupCard = new PopupWithForm ({
-  handleFormSubmit: ({submitButton, inputValues, closePopup}) => {
-    renderLoading({
-      submitButton,
-      submitText: submitTextCard,
-      disableSubmitButton: formValidatorNames['card-form'].disableSubmitButton,
-      enableSubmitButton: formValidatorNames['card-form'].enableSubmitButton,
-      promise: promiseCard,
-      inputValues,
-      closePopup
+  handleFormSubmit: inputValues => {
+    popupCard.setSubmitText(submitTextCard.process);
+    formValidatorNames['card-form'].disableSubmitButton();
+
+    api.postCard({
+      name: inputValues.title,
+      link: inputValues.link,
+    })
+    .then(res => {
+      renderCardElement(res, res.owner._id);
+      popupCard.setSubmitText(submitTextCard.accept);
+      setTimeout(() => {popupCard.close()}, 200);
+    })
+    .catch(err => {
+      console.log(err);
+      popupCard.setSubmitText(err);
+    })
+    .finally(() => {
+      setTimeout(() => {
+        popupCard.setSubmitText(submitTextCard.default);
+        formValidatorNames['card-form'].enableSubmitButton();
+      }, 1000);
     })
   }
 }, '#card');
 
 const popupTrash = new PopupWithSubmit ({
-  handleFormSubmit: ({submitButton, inputValues, closePopup}) => {
-    renderLoading({
-      submitButton,
-      submitText: submitTextTrash,
-      disableSubmitButton: formValidatorNames['trash-accept-form'].disableSubmitButton,
-      enableSubmitButton: formValidatorNames['trash-accept-form'].enableSubmitButton,
-      promise: promiseTrash,
-      inputValues,
-      closePopup
+  handleFormSubmit: ({cardId, element}) => {
+    popupTrash.setSubmitText(submitTextTrash.process);
+    formValidatorNames['trash-accept-form'].disableSubmitButton();
+
+    api.deleteCard(cardId)
+    .then(() => {
+      element.remove();
+      element = null;
+      popupTrash.setSubmitText(submitTextTrash.accept);
+      setTimeout(() => {popupTrash.close()}, 200);
+    })
+    .catch(err => {
+      console.log(err);
+      popupTrash.setSubmitText(err);
+    })
+    .finally(() => {
+      setTimeout(() => {
+        popupTrash.setSubmitText(submitTextTrash.default);
+        formValidatorNames['trash-accept-form'].enableSubmitButton();
+      }, 1000);
     })
   }
 }, '#trash-accept');

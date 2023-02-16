@@ -18,18 +18,18 @@ export default class PopupWithSubmit extends Popup {
     super.close();
   }
 
+  setSubmitText(submitText) {
+        this._submitButton.textContent = submitText;
+  }
+
   setEventListeners() {
     super.setEventListeners();
     this._popup.addEventListener('submit', evt => {
       evt.preventDefault();
       this._handleFormSubmit({
-        submitButton: this._submitButton,
-        inputValues: {
           cardId: this._cardId,
           element: this._element,
-        },
-        closePopup: this.close
-      })
+        })
     });
   }
 }

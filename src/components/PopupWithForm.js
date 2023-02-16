@@ -30,15 +30,15 @@ export default class PopupWithForm extends Popup {
     setTimeout(() => {this._form.reset()}, 500);
   }
 
+  setSubmitText(submitText) {
+    this._submitButton.textContent = submitText;
+  }
+
   setEventListeners() {
     super.setEventListeners();
     this._popup.addEventListener('submit', evt => {
       evt.preventDefault();
-      this._handleFormSubmit({
-        submitButton: this._submitButton,
-        inputValues: this._getInputValues(),
-        closePopup: this.close,
-      })
+      this._handleFormSubmit(this._getInputValues())
     });
   }
 }
